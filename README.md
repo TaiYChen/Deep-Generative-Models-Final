@@ -33,15 +33,15 @@
 
 - 使用Classifier loss更新Augmentor：90.72 (0.20↓)
 - 只使用文中Augmentor loss的第一项更新Augmentor：90.62 (0.30↓)
--- 分析：这两种训练方式本质上都是让Augmentor与Classifier同向训练，按理说Augmentor会试图学出一个恒等映射，这样对classifier分类难度是最低的，这样Augmentor就没有起到任何作用，但实验表明准确率只下降了一点。
+    - 分析：这两种训练方式本质上都是让Augmentor与Classifier同向训练，按理说Augmentor会试图学出一个恒等映射，这样对classifier分类难度是最低的，这样Augmentor就没有起到任何作用，但实验表明准确率只下降了一点。
 - 在Augmentor网络中，不使用点云特征，而是只用噪声作为M矩阵和D矩阵的输入：90.64 (0.28↓)
--- 分析：这更加证明了Augmentor网络没有起到原文所说的作用，即能够对每个点云生成特异性的增强样本，以解决传统增强方法不灵活的问题。
+    - 分析：这更加证明了Augmentor网络没有起到原文所说的作用，即能够对每个点云生成特异性的增强样本，以解决传统增强方法不灵活的问题。
 
 ### 对Augmentor网络结构进行的改进
 实验：MN40数据集，点云分类任务，Classifier使用PointNet
 
 - Augmentor改用PCT backbone：91.00 (0.08↑)
--- 分析：没有明显改进。这个实验是我们最开始做的，既然后续实验已经证明Augmentor没有太大作用，那这个实验也就没有意义了，这里仅仅贴一下结果。
+    - 分析：没有明显改进。这个实验是我们最开始做的，既然后续实验已经证明Augmentor没有太大作用，那这个实验也就没有意义了，这里仅仅贴一下结果。
 
 ## 结论
 我们通过一些实验证明了原文提出的方法（使用Augmentor进行对抗训练做为数据增强）没有明显效果。原文列举的实验结果通过将他的方法和baseline原文报告的结果比较以证明准确率的提升，但这个提升主要源于实现上的改进（以及一些不明的trick）提升了baseline的表现。
@@ -89,24 +89,24 @@ Pytorch 1.7。
 
 具体实验包括：
 - 原文的PointAugment算法
--- log目录20210611-2107
+    - log目录20210611-2107
 - 用Classifier Loss更新Augmentor
--- log目录20210612-1525
+    - log目录20210612-1525
 - Augmentor Loss只保留第一项
--- log目录20210612-1637
+    - log目录20210612-1637
 - 只训练Classifier
--- log目录20210612-2152
+    - log目录20210612-2152
 - 只训练Classifier，并且去掉传统的数据增强
--- log目录20210615-1024
+    - log目录20210615-1024
 - 用PointNet++做Classifier，训练原文的PointAugment算法
--- log目录20210613-1820
--- 改用指令```python3 train_PA.py --data_dir ModelNet40_Folder --batch_size 12 --model_name pointnet2```
+    - log目录20210613-1820
+    - 改用指令```python3 train_PA.py --data_dir ModelNet40_Folder --batch_size 12 --model_name pointnet2```
 - 用PointNet++做Classifier，只训练Classifier
--- log目录20210614-1015
--- 改用指令```python3 train_PA.py --data_dir ModelNet40_Folder --batch_size 12 --model_name pointnet2```
+    - log目录20210614-1015
+    - 改用指令```python3 train_PA.py --data_dir ModelNet40_Folder --batch_size 12 --model_name pointnet2```
 - Augmentor改用PCT做backbone
--- log目录20210513-1012
+    - log目录20210513-1012
 - Augmentor改成不使用点云特征，随机生成M和D矩阵
--- log目录20210615-1551
+    - log目录20210615-1551
 
 列表中最后两项实验需要在pytorch 1.1的库版本下运行。这是因为我们两个组员分别尝试了各种实验，但彼此的pytorch版本不同。pytorch新旧版本的代码互相不兼容，本repo中放的代码大部分都是pytorch 1.7的，但最后两项实验中log目录下的代码是1.1版本的，运行时需要切换pytorch版本。
